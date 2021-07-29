@@ -1,4 +1,4 @@
-package softuni.exam.models.dto;
+package softuni.exam.models.dto.JsonDto;
 
 import com.google.gson.annotations.Expose;
 import org.hibernate.validator.constraints.Length;
@@ -12,13 +12,6 @@ import java.util.Date;
 
 public class CarSeedDto {
 
-    /*
-                "make": "BMW",
-                "model": "750",
-                "kilometers": 166235,
-                "registeredOn": "04/04/2016"
-
-     */
     @Expose
     private String make;
 

@@ -2,9 +2,8 @@ package softuni.exam.service.impl;
 
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import softuni.exam.models.dto.CarSeedDto;
+import softuni.exam.models.dto.JsonDto.CarSeedDto;
 import softuni.exam.models.entity.Car;
 import softuni.exam.repository.CarRepository;
 import softuni.exam.service.CarService;
@@ -44,19 +43,32 @@ public class CarServiceImpl implements CarService {
     @Override
     public String importCars() throws IOException {
 
-
+    StringBuilder builder = new StringBuilder();
         Arrays.stream(gson
                 .fromJson(readCarsFileContent(), CarSeedDto[].class))
-                .filter(validationUtil::isValid)
-                .map(carSeedDto -> modelMapper.map(carSeedDto,Car.class))
-                .forEach(carRepository::save);
+                .forEach(carSeedDto -> {
+                    boolean valid = validationUtil.isValid(carSeedDto);
+                    if (valid){
+                        Car car = modelMapper.map(carSeedDto,Car.class);
+                        carRepository.save(car);
+                        builder.append(String.format("Successfully imported car - %s - %s",car.getMake(),car.getModel()));
+                    } else {
+                        builder.append("Invalid car");
+                    }
+                    builder.append(System.lineSeparator());
+                });
 
 
-        return "Yes" ;
+        return builder.toString() ;
     }
 
     @Override
     public String getCarsOrderByPicturesCountThenByMake() {
         return null;
+    }
+
+    @Override
+    public Car getCarById(Long id) {
+        return carRepository.findCarById(id);
     }
 }

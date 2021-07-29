@@ -11,6 +11,7 @@ import softuni.exam.util.ValidationUtil;
 import softuni.exam.util.impl.ValidationUtilImpl;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 
@@ -43,6 +44,14 @@ public class ApplicationBeanConfiguration {
                                 DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             }
 
+        });
+
+        modelMapper.addConverter(new Converter<String, LocalDateTime>() {
+            @Override
+            public LocalDateTime convert(MappingContext<String, LocalDateTime> mappingContext) {
+                return LocalDateTime
+                        .parse(mappingContext.getSource(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            }
         });
 
         return modelMapper;
