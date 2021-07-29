@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -64,7 +67,9 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public String getCarsOrderByPicturesCountThenByMake() {
-        return null;
+        List<Car>   cars = carRepository.getCarsOrderByPicturesCountThenByMake();
+
+        return cars.stream().map(Car::toString).collect(Collectors.joining("\n"));
     }
 
     @Override

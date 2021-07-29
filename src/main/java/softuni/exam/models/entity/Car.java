@@ -1,9 +1,6 @@
 package softuni.exam.models.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Set;
@@ -59,7 +56,7 @@ public class Car extends BaseEntity{
         this.registeredOn = registeredOn;
     }
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car",fetch = FetchType.EAGER)
     public Set<Picture> getPictures() {
         return pictures;
     }
@@ -69,12 +66,21 @@ public class Car extends BaseEntity{
     }
 
 
-    @OneToMany(mappedBy = "car")
+    @OneToMany(mappedBy = "car", fetch = FetchType.EAGER)
     public Set<Offer> getOffers() {
         return offers;
     }
 
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Car make - %s, model - %s\n" +
+                "\tKilometers - %s\n" +
+                "\tRegistered on - %s\n" +
+                "\tNumber of pictures - %d",
+                getMake(),getModel(),getKilometers(),getRegisteredOn(),getPictures().size());
     }
 }
